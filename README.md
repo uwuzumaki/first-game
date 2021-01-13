@@ -1,0 +1,1 @@
+Rock Paper scissors assignment for The Odin Project.
