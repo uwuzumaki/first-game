@@ -14,35 +14,60 @@
 
     function playRound(playerSelection, computerSelection) {
         lower = playerSelection.toLowerCase();
-        result = "";
+        result = 0;
         if (lower == "rock") {
             if (computerSelection == "rock") {
-                result = "It's a tie! Both players picked rock!";
+                console.log("It's a tie! Both players picked rock!");
             } else if (computerSelection == "paper") {
-                result = "You lose! Paper beats rock!";
+                console.log("You lose! Paper beats rock!");
+                result--;
             } else {
-                result = "You win! Rock beats scissors"
+                console.log("You win! Rock beats scissors");
+                result++;
             }
         } else if (lower == "paper") {
             if (computerSelection == "rock") {
-                result = "You win! Paper beats rock!";
+                console.log("You win! Paper beats rock!");
+                result++;
             } else if (computerSelection == "paper") {
-                result = "It's a tie! Both players picked paper!";
+                console.log("It 's a tie! Both players picked paper!");
             } else {
-                result = "You lose! Scissors beats paper!"
+                console.log("You lose! Scissors beats paper!");
+                result--;
             }
         } else {
             if (computerSelection == "rock") {
-                result = "You lose! Rock beats scissors!";
+                console.log("You lose! Rock beats scissors!");
+                result--;
             } else if (computerSelection == "paper") {
-                result = "You win! Scissors beats paper!!";
+                console.log("You win! Scissors beats paper!!");
+                result++;
             } else {
-                result = "It's a tie! Both players picked scissors"
+                console.log("It's a tie! Both players picked scissors");
             }
         }
         return result;
     }
-    const playerSelection = "PAPER";
-    const computerSelection = computerPlay();
-    console.log(playRound(playerSelection, computerSelection));
+
+    function game() {
+        let score = 0;
+        for (i = 0; i < 5; i++) {
+            const playerSelection = prompt("Please choose an option")
+            const computerSelection = computerPlay();
+            score += playRound(playerSelection, computerSelection);
+
+        }
+        if (score > 0) {
+            console.log("You win");
+        } else if (score < 0) {
+            console.log("You lose")
+        } else {
+            console.log("It was a tie");
+        }
+    }
 </script>
+
+<html>
+<button onclick="game()">Game function</button>
+
+</html>
