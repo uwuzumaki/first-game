@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="rpsgame3.css">
+</head>
+
+<body id="main">
+    <div id="div1">
+        <button id="play">Start</button>
+    </div>
+    <div>
+        <button id="rock">Rock</button>
+        <button id="paper">Paper</button>
+        <button id="scissors">Scissors</button>
+    </div>
+
+</body>
+<script>
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            playRound(button.id, computerPlay());
+        });
+    });
+
+    function result(message) {
+        const newDiv = document.createElement('div');
+        const result = document.createTextNode(message);
+        newDiv.appendChild(result);
+        const currentDiv = document.getElementById('div1');
+        document.body.insertBefore(newDiv, currentDiv);
+    }
+
+    function score(player, computer) {
+        const newDiv = document.createElement('div');
+        const result = document.createTextNode("The current score is: ");
+        const displayScore = document.createTextNode(`\n Player: ${player} | Computer: ${computer}`);
+        newDiv.appendChild(result);
+        newDiv.appendChild(document.createElement('br'));
+        newDiv.appendChild(displayScore);
+        const currentDiv = document.getElementById('div1');
+        document.body.insertBefore(newDiv, currentDiv);
+    }
+
+
+    function computerPlay() {
+        var shoot = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+        var result = "";
+        if (shoot == 1) {
+            result = "rock";
+        } else if (shoot == 2) {
+            result = "paper";
+        } else {
+            result = "scissors";
+        }
+        return result;
+    }
+
+    function playRound(playerSelection, computerSelection) {
+        let pScore = 0;
+        let cScore = 0;
+        if (playerSelection == "rock") {
+            if (computerSelection == "rock") {
+                result("It's a tie! Both players picked rock!");
+                score(pScore, cScore);
+            } else if (computerSelection == "paper") {
+                result("You lose! Paper beats rock!");
+                cScore++;
+                score(pScore, cScore);
+
+            } else {
+                result("You win! Rock beats scissors");
+                pScore++;
+                score(pScore, cScore);
+            }
+        } else if (playerSelection == "paper") {
+            if (computerSelection == "rock") {
+                result("You win! Paper beats rock!");
+                pScore++;
+                score(pScore, cScore);
+
+            } else if (computerSelection == "paper") {
+                result("It 's a tie! Both players picked paper!");
+                score(pScore, cScore);
+
+            } else {
+                result("You lose! Scissors beats paper!");
+                cScore++;
+                score(pScore, cScore);
+
+            }
+        } else {
+            if (computerSelection == "rock") {
+                result("You lose! Rock beats scissors!");
+                cScore++;
+                score(pScore, cScore);
+            } else if (computerSelection == "paper") {
+                result("You win! Scissors beats paper!!");
+                pScore++;
+                score(pScore, cScore);
+            } else {
+                result("It's a tie! Both players picked scissors");
+                score(pScore, cScore);
+            }
+        }
+    }
+</script>
+
+</html>
