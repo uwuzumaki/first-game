@@ -9,15 +9,22 @@
 
 <body id="main">
     <div id="div1">
+        <!--Button to start the game-->
         <button id="play">Start</button>
     </div>
 </body>
 <script>
+    // Global Variables to keep track of score
+    let gPScore = 0;
+    let gCScore = 0;
+
+    //Starts the game when the start button is pressed
     const start = document.querySelector('#play');
     start.addEventListener('click', () => {
         game();
     });
 
+    //Creates the rock paper scissors buttons when the start button is pressed
     function gameButtons() {
         const newDiv = document.createElement('div');
         const rock = document.createElement('BUTTON');
@@ -39,13 +46,26 @@
         currentDiv.appendChild(newDiv);
     }
 
-    const buttons = document.querySelectorAll('.choice');
-    buttons.forEach((button) => {
-        button.addEventListener('click', () => {
-            playRound(button.id, computerPlay());
+    //Inputs the player's choice when a button is pressed and calls the function to randomize a computer choice
+    //Returns a result
+    function choice() {
+        const buttons = document.querySelectorAll('.choice');
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                playRound(button.id, computerPlay());
+                score(gPScore, gCScore);
+                if (gPScore == 5) {
+                    console.log("You win!");
+                } else if (gCScore == 5) {
+                    console.log("You lose!");
+                }
+            });
         });
-    });
+    }
 
+
+
+    //Displays the results of the parameter message
     function result(message) {
         const newDiv = document.createElement('div');
         const result = document.createTextNode(message);
@@ -54,6 +74,7 @@
         document.body.insertBefore(newDiv, currentDiv);
     }
 
+    //Displays the current score
     function score(player, computer) {
         const newDiv = document.createElement('div');
         const result = document.createTextNode("The current score is: ");
@@ -65,7 +86,7 @@
         document.body.insertBefore(newDiv, currentDiv);
     }
 
-
+    //Function that randomizes a computer selection
     function computerPlay() {
         var shoot = Math.floor(Math.random() * (3 - 1 + 1) + 1);
         var result = "";
@@ -79,69 +100,58 @@
         return result;
     }
 
+    //Plays a round and displays the result based on the player and computer selection
+    //Returns a +1 for a player win and a -1 for a computer win
     function playRound(playerSelection, computerSelection) {
         let pScore = 0;
         let cScore = 0;
+        let point = 0;
         if (playerSelection == "rock") {
             if (computerSelection == "rock") {
                 result("It's a tie! Both players picked rock!");
-                score(pScore, cScore);
             } else if (computerSelection == "paper") {
                 result("You lose! Paper beats rock!");
                 cScore++;
-                score(pScore, cScore);
 
             } else {
                 result("You win! Rock beats scissors");
                 pScore++;
-                score(pScore, cScore);
             }
         } else if (playerSelection == "paper") {
             if (computerSelection == "rock") {
                 result("You win! Paper beats rock!");
                 pScore++;
-                score(pScore, cScore);
 
             } else if (computerSelection == "paper") {
                 result("It 's a tie! Both players picked paper!");
-                score(pScore, cScore);
-
             } else {
                 result("You lose! Scissors beats paper!");
                 cScore++;
-                score(pScore, cScore);
 
             }
         } else {
             if (computerSelection == "rock") {
                 result("You lose! Rock beats scissors!");
                 cScore++;
-                score(pScore, cScore);
             } else if (computerSelection == "paper") {
                 result("You win! Scissors beats paper!!");
                 pScore++;
-                score(pScore, cScore);
             } else {
                 result("It's a tie! Both players picked scissors");
-                score(pScore, cScore);
             }
         }
+        if (pScore > 0) {
+            gPScore++;
+        } else if (cScore > 0) {
+            gCScore++;
+        }
+        console.log(gPScore, gCScore);
     }
 
+    //Plays a game when the start button is pressed.
     function game() {
-        let pScore = 0;
-        let cScore = 0;
         gameButtons();
-        while (pScore < 5 || cScore < 5) {
-            const computerSelection = computerPlay();
-            score += playRound(playerSelection, computerSelection);
-
-        }
-        if (pScore == 5) {
-            console.log("You win");
-        } else {
-            console.log("You lose.")
-        }
+        choice();
     }
 </script>
 
