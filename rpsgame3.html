@@ -12,7 +12,10 @@
         <!--Button to start the game-->
         <button id="play">Start</button>
     </div>
+    <div id="newResult">
+    </div>
 </body>
+
 <script>
     // Global Variables to keep track of score
     let gPScore = 0;
@@ -21,12 +24,17 @@
     //Starts the game when the start button is pressed
     const start = document.querySelector('#play');
     start.addEventListener('click', () => {
-        game();
+        //Removes the start button
+        const startBut = document.getElementById('div1');
+        startBut.remove();
+        gameButtons();
+        playerChoice();
     });
 
     //Creates the rock paper scissors buttons when the start button is pressed
     function gameButtons() {
         const newDiv = document.createElement('div');
+        newDiv.setAttribute('id', 'mainButtons')
         const rock = document.createElement('BUTTON');
         rock.innerHTML = "Rock";
         rock.setAttribute('id', 'rock');
@@ -48,42 +56,85 @@
 
     //Inputs the player's choice when a button is pressed and calls the function to randomize a computer choice
     //Returns a result
-    function choice() {
+    function playerChoice() {
         const buttons = document.querySelectorAll('.choice');
         buttons.forEach((button) => {
             button.addEventListener('click', () => {
                 playRound(button.id, computerPlay());
-                score(gPScore, gCScore);
+                displayScore(gPScore, gCScore);
                 if (gPScore == 5) {
-                    console.log("You win!");
+                    finalClearScreen();
+                    victory();
+                    reset();
                 } else if (gCScore == 5) {
-                    console.log("You lose!");
+                    finalClearScreen();
+                    defeat();
+                    reset();
                 }
             });
         });
     }
 
+    //Clears the results on the screen
+    function clearText() {
+        const resultsDiv = document.querySelector('#newResult');
+        resultsDiv.textContent = '';
+    }
 
-
-    //Displays the results of the parameter message
+    //Displays the results of the round
     function result(message) {
-        const newDiv = document.createElement('div');
+        const newDiv = document.querySelector('#newResult')
         const result = document.createTextNode(message);
         newDiv.appendChild(result);
-        const currentDiv = document.getElementById('div1');
-        document.body.insertBefore(newDiv, currentDiv);
     }
 
     //Displays the current score
-    function score(player, computer) {
-        const newDiv = document.createElement('div');
+    function displayScore(player, computer) {
+        const newDiv = document.querySelector('#newResult');
         const result = document.createTextNode("The current score is: ");
         const displayScore = document.createTextNode(`\n Player: ${player} | Computer: ${computer}`);
+        newDiv.appendChild(document.createElement('br'));
         newDiv.appendChild(result);
         newDiv.appendChild(document.createElement('br'));
         newDiv.appendChild(displayScore);
-        const currentDiv = document.getElementById('div1');
-        document.body.insertBefore(newDiv, currentDiv);
+    }
+
+    //Clears the screen for final score
+    function finalClearScreen() {
+        clearText();
+        const buttons = document.querySelectorAll('.choice');
+        buttons.forEach((button) => {
+            button.remove();
+        });
+    }
+
+    //Victory Screen
+    function victory() {
+        result(`You win with a final score of ${gPScore} to ${gCScore}!`);
+        document.getElementById('newResult').appendChild(document.createElement('br'));
+        result("Good job!");
+        document.getElementById('newResult').appendChild(document.createElement('br'));
+    }
+
+    //Defeat Screen
+    function defeat() {
+        result(`You lose with a final score of ${gPScore} to ${gCScore}!`);
+        document.getElementById('newResult').appendChild(document.createElement('br'));
+        result("Better luck next time!");
+        document.getElementById('newResult').appendChild(document.createElement('br'));
+    }
+
+    //Reset button
+    function reset() {
+        const reset = document.createElement('BUTTON');
+        reset.setAttribute('id', 'reset')
+        reset.innerHTML = "Play again?";
+        const resultDiv = document.getElementById('newResult');
+        resultDiv.appendChild(reset);
+        const resetListener = document.getElementById('reset');
+        resetListener.addEventListener('click', () => {
+            window.location.reload();
+        });
     }
 
     //Function that randomizes a computer selection
@@ -103,6 +154,7 @@
     //Plays a round and displays the result based on the player and computer selection
     //Returns a +1 for a player win and a -1 for a computer win
     function playRound(playerSelection, computerSelection) {
+        clearText();
         let pScore = 0;
         let cScore = 0;
         let point = 0;
@@ -145,13 +197,6 @@
         } else if (cScore > 0) {
             gCScore++;
         }
-        console.log(gPScore, gCScore);
-    }
-
-    //Plays a game when the start button is pressed.
-    function game() {
-        gameButtons();
-        choice();
     }
 </script>
 
