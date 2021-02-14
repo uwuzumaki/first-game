@@ -11,15 +11,35 @@
     <div id="div1">
         <button id="play">Start</button>
     </div>
-    <div>
-        <button id="rock">Rock</button>
-        <button id="paper">Paper</button>
-        <button id="scissors">Scissors</button>
-    </div>
-
 </body>
 <script>
-    const buttons = document.querySelectorAll('button');
+    const start = document.querySelector('#play');
+    start.addEventListener('click', () => {
+        game();
+    });
+
+    function gameButtons() {
+        const newDiv = document.createElement('div');
+        const rock = document.createElement('BUTTON');
+        rock.innerHTML = "Rock";
+        rock.setAttribute('id', 'rock');
+        rock.setAttribute('class', 'choice');
+        newDiv.appendChild(rock);
+        const paper = document.createElement('BUTTON');
+        paper.innerHTML = "Paper";
+        paper.setAttribute('id', 'paper');
+        paper.setAttribute('class', 'choice');
+        newDiv.appendChild(paper);
+        const scissors = document.createElement('BUTTON');
+        scissors.innerHTML = "Scissors";
+        scissors.setAttribute('id', 'scissors');
+        scissors.setAttribute('class', 'choice');
+        newDiv.appendChild(scissors);
+        const currentDiv = document.getElementById('main')
+        currentDiv.appendChild(newDiv);
+    }
+
+    const buttons = document.querySelectorAll('.choice');
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
             playRound(button.id, computerPlay());
@@ -105,6 +125,22 @@
                 result("It's a tie! Both players picked scissors");
                 score(pScore, cScore);
             }
+        }
+    }
+
+    function game() {
+        let pScore = 0;
+        let cScore = 0;
+        gameButtons();
+        while (pScore < 5 || cScore < 5) {
+            const computerSelection = computerPlay();
+            score += playRound(playerSelection, computerSelection);
+
+        }
+        if (pScore == 5) {
+            console.log("You win");
+        } else {
+            console.log("You lose.")
         }
     }
 </script>
